@@ -4,6 +4,27 @@ import { useLocation, useNavigate } from "react-router-dom";
 import API from "../../api/axios";
 import "./MyOrders.css";
 
+// Get the backend URL from the Axios configuration
+const SERVER_URL = API.defaults.baseURL.replace(/\/api\/?$/, "");
+
+// Convert relative image paths into full backend URLs
+const getImageUrl = (imageUrl) => {
+  if (!imageUrl) return "";
+
+  // Keep external image URLs unchanged
+  if (
+    imageUrl.startsWith("http://") ||
+    imageUrl.startsWith("https://") ||
+    imageUrl.startsWith("data:") ||
+    imageUrl.startsWith("blob:")
+  ) {
+    return imageUrl;
+  }
+
+  // Convert /uploads/image.jpg into the full Render URL
+  return `${SERVER_URL}/${imageUrl.replace(/^\/+/, "")}`;
+};
+
 export default function MyOrders() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -12,7 +33,9 @@ export default function MyOrders() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [expandedOrder, setExpandedOrder] = useState(null);
-  const [reviewedProductIds, setReviewedProductIds] = useState(() => new Set());
+  const [reviewedProductIds, setReviewedProductIds] = useState(
+    () => new Set()
+  );
   const [reviewDetailsByKey, setReviewDetailsByKey] = useState({});
   const [reviewDrafts, setReviewDrafts] = useState({});
   const [activeReviewProductId, setActiveReviewProductId] = useState(null);
@@ -21,6 +44,7 @@ export default function MyOrders() {
 
   const successMessage = location.state?.successMessage;
 
+  // Fetch customer orders and reviews
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -30,18 +54,29 @@ export default function MyOrders() {
         ]);
 
         setOrders(ordersResponse.data.orders || []);
+
         const customerReviews = reviewsResponse.data.reviews || [];
+
         setReviewedProductIds(
           new Set(
             customerReviews.map((review) =>
-              `${String(review.order?._id || review.order)}:${String(review.product?._id || review.product)}`
+              `${String(
+                review.order?._id || review.order
+              )}:${String(
+                review.product?._id || review.product
+              )}`
             )
           )
         );
+
         setReviewDetailsByKey(
           Object.fromEntries(
             customerReviews.map((review) => [
-              `${String(review.order?._id || review.order)}:${String(review.product?._id || review.product)}`,
+              `${String(
+                review.order?._id || review.order
+              )}:${String(
+                review.product?._id || review.product
+              )}`,
               review,
             ])
           )
@@ -58,6 +93,7 @@ export default function MyOrders() {
     fetchOrders();
   }, []);
 
+  // Update review form values
   const updateReviewDraft = (reviewKey, updates) => {
     setReviewDrafts((current) => ({
       ...current,
@@ -70,9 +106,20 @@ export default function MyOrders() {
     }));
   };
 
-  const handleSubmitReview = async (event, orderId, productId, reviewKey) => {
+  // Submit product review
+  const handleSubmitReview = async (
+    event,
+    orderId,
+    productId,
+    reviewKey
+  ) => {
     event.preventDefault();
-    const draft = reviewDrafts[reviewKey] || { rating: 5, comment: "" };
+
+    const draft = reviewDrafts[reviewKey] || {
+      rating: 5,
+      comment: "",
+    };
+
     const comment = draft.comment.trim();
 
     if (comment.length < 3) {
@@ -85,7 +132,11 @@ export default function MyOrders() {
 
     try {
       setSubmittingReviewId(reviewKey);
-      setReviewMessages((current) => ({ ...current, [reviewKey]: "" }));
+
+      setReviewMessages((current) => ({
+        ...current,
+        [reviewKey]: "",
+      }));
 
       const response = await API.post("/reviews", {
         orderId,
@@ -98,24 +149,33 @@ export default function MyOrders() {
         ...current,
         [reviewKey]: response.data.review,
       }));
-      setReviewedProductIds((current) => new Set([...current, reviewKey]));
+
+      setReviewedProductIds(
+        (current) => new Set([...current, reviewKey])
+      );
+
       window.dispatchEvent(new Event("reviewsUpdated"));
+
       setActiveReviewProductId(null);
+
       setReviewMessages((current) => ({
         ...current,
-        [reviewKey]: response.data.message || "Review submitted successfully.",
+        [reviewKey]:
+          response.data.message || "Review submitted successfully.",
       }));
     } catch (err) {
       setReviewMessages((current) => ({
         ...current,
         [reviewKey]:
-          err.response?.data?.message || "Unable to submit your review.",
+          err.response?.data?.message ||
+          "Unable to submit your review.",
       }));
     } finally {
       setSubmittingReviewId(null);
     }
   };
 
+  // Format order date
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString("en-IN", {
       day: "numeric",
@@ -124,12 +184,17 @@ export default function MyOrders() {
     });
   };
 
+  // Get order status class
   const getStatusClass = (status) => {
     return status?.toLowerCase() || "pending";
   };
 
   if (loading) {
-    return <div className="orders-loading">Loading your orders...</div>;
+    return (
+      <div className="orders-loading">
+        Loading your orders...
+      </div>
+    );
   }
 
   return (
@@ -144,15 +209,22 @@ export default function MyOrders() {
       </div>
 
       {successMessage && (
-        <div className="orders-success">{successMessage}</div>
+        <div className="orders-success">
+          {successMessage}
+        </div>
       )}
 
-      {error && <div className="orders-error">{error}</div>}
+      {error && (
+        <div className="orders-error">
+          {error}
+        </div>
+      )}
 
       {!error && orders.length === 0 ? (
         <div className="orders-empty">
           <h2>No orders yet</h2>
           <p>Your purchased products will appear here.</p>
+
           <button onClick={() => navigate("/")}>
             Start Shopping
           </button>
@@ -164,7 +236,9 @@ export default function MyOrders() {
               <div className="order-card-header">
                 <div>
                   <span>ORDER ID</span>
-                  <strong>#{order._id.slice(-8).toUpperCase()}</strong>
+                  <strong>
+                    #{order._id.slice(-8).toUpperCase()}
+                  </strong>
                 </div>
 
                 <div>
@@ -179,68 +253,146 @@ export default function MyOrders() {
                   </strong>
                 </div>
 
-                <span className={`order-status ${getStatusClass(order.status)}`}>
+                <span
+                  className={`order-status ${getStatusClass(
+                    order.status
+                  )}`}
+                >
                   {order.status}
                 </span>
               </div>
 
               <div className="order-products">
                 {order.items?.map((item, index) => {
-                  const productId = String(item.product?._id || item.product || "");
+                  const productId = String(
+                    item.product?._id || item.product || ""
+                  );
+
                   const orderId = String(order._id);
                   const reviewKey = `${orderId}:${productId}`;
-                  const submittedReview = reviewDetailsByKey[reviewKey];
+
+                  const submittedReview =
+                    reviewDetailsByKey[reviewKey];
+
                   const draft = reviewDrafts[reviewKey] || {
                     rating: 5,
                     comment: "",
                   };
+
                   const canReview =
-                    order.status?.toLowerCase() === "delivered" && productId;
+                    order.status?.toLowerCase() === "delivered" &&
+                    productId;
+
+                  // Support both saved order images and populated product images
+                  const imageUrl = getImageUrl(
+                    item.imageUrl || item.product?.imageUrl
+                  );
 
                   return (
                     <div
                       className="order-product"
                       key={item._id || `${order._id}-${index}`}
                     >
-                      {item.imageUrl ? (
+                      {/* Product image with fallback */}
+                      {imageUrl ? (
                         <img
-                          src={item.imageUrl}
-                          alt={item.name || "Product"}
+                          src={imageUrl}
+                          alt={
+                            item.name ||
+                            item.product?.name ||
+                            "Product"
+                          }
+                          onError={(event) => {
+                            event.currentTarget.style.display = "none";
+
+                            const fallback =
+                              event.currentTarget.nextElementSibling;
+
+                            if (fallback) {
+                              fallback.style.display = "flex";
+                            }
+                          }}
                         />
-                      ) : (
-                        <div className="order-product-placeholder">
-                          No Image
-                        </div>
-                      )}
+                      ) : null}
+
+                      <div
+                        className="order-product-placeholder"
+                        style={{
+                          display: imageUrl ? "none" : "flex",
+                        }}
+                      >
+                        No Image
+                      </div>
 
                       <div className="order-product-info">
-                        <h3>{item.name || item.product?.name || "Product"}</h3>
+                        <h3>
+                          {item.name ||
+                            item.product?.name ||
+                            "Product"}
+                        </h3>
+
                         <p>Quantity: {item.quantity}</p>
 
-                        {canReview && reviewedProductIds.has(reviewKey) ? (
+                        {/* Already submitted review */}
+                        {canReview &&
+                        reviewedProductIds.has(reviewKey) ? (
                           <div className="order-review-posted">
-                            <strong className="order-review-complete">✓ Your review</strong>
-                            <div className="order-review-posted-stars" aria-label={`${submittedReview?.rating || 0} out of 5 stars`}>
-                              {"★".repeat(Number(submittedReview?.rating) || 0)}{"☆".repeat(5 - (Number(submittedReview?.rating) || 0))}
+                            <strong className="order-review-complete">
+                              ✓ Your review
+                            </strong>
+
+                            <div
+                              className="order-review-posted-stars"
+                              aria-label={`${
+                                submittedReview?.rating || 0
+                              } out of 5 stars`}
+                            >
+                              {"★".repeat(
+                                Number(submittedReview?.rating) || 0
+                              )}
+                              {"☆".repeat(
+                                5 -
+                                  (Number(
+                                    submittedReview?.rating
+                                  ) || 0)
+                              )}
                             </div>
-                            <p>{submittedReview?.comment || "Your review was submitted."}</p>
+
+                            <p>
+                              {submittedReview?.comment ||
+                                "Your review was submitted."}
+                            </p>
                           </div>
-                        ) : canReview && activeReviewProductId === reviewKey ? (
+                        ) : canReview &&
+                          activeReviewProductId === reviewKey ? (
+                          /* Review form */
                           <form
                             className="order-review-form"
                             onSubmit={(event) =>
-                              handleSubmitReview(event, orderId, productId, reviewKey)
+                              handleSubmitReview(
+                                event,
+                                orderId,
+                                productId,
+                                reviewKey
+                              )
                             }
                           >
                             <label>Your rating</label>
+
                             <div className="order-review-stars">
                               {[1, 2, 3, 4, 5].map((star) => (
                                 <button
                                   key={star}
                                   type="button"
-                                  className={star <= draft.rating ? "selected" : ""}
+                                  className={
+                                    star <= draft.rating
+                                      ? "selected"
+                                      : ""
+                                  }
                                   onClick={() =>
-                                    updateReviewDraft(reviewKey, { rating: star })
+                                    updateReviewDraft(reviewKey, {
+                                      rating: star,
+                                    })
                                   }
                                   aria-label={`Rate ${star} out of 5`}
                                 >
@@ -252,6 +404,7 @@ export default function MyOrders() {
                             <label htmlFor={`review-${reviewKey}`}>
                               Your review
                             </label>
+
                             <textarea
                               id={`review-${reviewKey}`}
                               value={draft.comment}
@@ -275,28 +428,37 @@ export default function MyOrders() {
                             <div className="order-review-actions">
                               <button
                                 type="submit"
-                                disabled={submittingReviewId === reviewKey}
+                                disabled={
+                                  submittingReviewId === reviewKey
+                                }
                               >
                                 {submittingReviewId === reviewKey
                                   ? "Submitting..."
                                   : "Submit review"}
                               </button>
+
                               <button
                                 type="button"
                                 className="order-review-cancel"
-                                onClick={() => setActiveReviewProductId(null)}
-                                disabled={submittingReviewId === reviewKey}
+                                onClick={() =>
+                                  setActiveReviewProductId(null)
+                                }
+                                disabled={
+                                  submittingReviewId === reviewKey
+                                }
                               >
                                 Cancel
                               </button>
                             </div>
                           </form>
                         ) : canReview ? (
+                          /* Rate product button */
                           <div className="order-review-entry">
                             <button
                               type="button"
                               onClick={() => {
                                 setActiveReviewProductId(reviewKey);
+
                                 setReviewMessages((current) => ({
                                   ...current,
                                   [reviewKey]: "",
@@ -305,6 +467,7 @@ export default function MyOrders() {
                             >
                               Rate this product
                             </button>
+
                             {reviewMessages[reviewKey] && (
                               <p className="order-review-message">
                                 {reviewMessages[reviewKey]}
@@ -315,8 +478,10 @@ export default function MyOrders() {
                       </div>
 
                       <strong>
-                        ₹{(
-                          Number(item.price) * Number(item.quantity)
+                        ₹
+                        {(
+                          Number(item.price) *
+                          Number(item.quantity)
                         ).toFixed(2)}
                       </strong>
                     </div>
@@ -332,7 +497,9 @@ export default function MyOrders() {
                 <button
                   onClick={() =>
                     setExpandedOrder(
-                      expandedOrder === order._id ? null : order._id
+                      expandedOrder === order._id
+                        ? null
+                        : order._id
                     )
                   }
                 >
@@ -349,6 +516,7 @@ export default function MyOrders() {
                   <p>{order.shippingAddress?.fullName}</p>
                   <p>{order.shippingAddress?.phone}</p>
                   <p>{order.shippingAddress?.address}</p>
+
                   <p>
                     {order.shippingAddress?.city},{" "}
                     {order.shippingAddress?.postalCode}
