@@ -1,0 +1,27 @@
+.view-details-button {
+    border: none;
+    background: transparent;
+    color: var(--gold);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 8px 0;
+    font-size: 13px;
+}
+
+.view-details-button:hover {
+    text-decoration: underline;
+}
+
+.product-card-rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 8px 0;
+    color: #777;
+    font-size: 13px;
+}
+
+.product-card-stars {
+    color: var(--gold);
+    letter-spacing: 1px;
+}

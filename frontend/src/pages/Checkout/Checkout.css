@@ -1,0 +1,299 @@
+
+.checkout-page {
+  min-height: 100vh;
+  padding: 45px 7%;
+  background: #ffffff;
+  color: #191b20;
+}
+
+.checkout-header {
+  margin-bottom: 35px;
+}
+
+.checkout-header button {
+  border: none;
+  background: none;
+  color: #bd914b;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.checkout-header h1 {
+  font-size: 38px;
+  margin-bottom: 8px;
+}
+
+.checkout-header p {
+  color: #85858b;
+}
+
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 35px;
+  align-items: start;
+}
+
+.shipping-form,
+.checkout-summary {
+  background: #fff;
+  border: 1px solid #eeece8;
+  border-radius: 12px;
+  padding: 28px;
+}
+
+.shipping-form h2,
+.checkout-summary h2 {
+  font-size: 21px;
+  margin-bottom: 25px;
+}
+
+.shipping-form label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 17px 0 8px;
+}
+
+.shipping-form input,
+.shipping-form textarea {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #eeece8;
+  border-radius: 7px;
+  outline: none;
+  font: inherit;
+  font-size: 14px;
+}
+
+.shipping-form input:focus,
+.shipping-form textarea:focus {
+  border-color: #bd914b;
+}
+
+.shipping-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.checkout-input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.checkout-input-row input {
+  min-width: 0;
+}
+
+.place-order-btn {
+  width: 100%;
+  margin-top: 25px;
+  padding: 15px;
+  background: #bd914b;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.place-order-btn:hover {
+  background: #a77d3e;
+}
+
+.place-order-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.checkout-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 15px 0;
+  border-bottom: 1px solid #eeece8;
+}
+
+.checkout-item h4 {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.checkout-item p {
+  color: #85858b;
+  font-size: 12px;
+}
+
+.checkout-item strong {
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.checkout-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+  padding-top: 18px;
+  border-top: 1px solid #eeece8;
+  font-size: 17px;
+}
+
+.checkout-error {
+  padding: 12px;
+  margin-bottom: 20px;
+  background: #fff0f0;
+  color: #c0392b;
+  border-radius: 6px;
+}
+
+.checkout-loading {
+  padding: 60px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .checkout-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-page {
+    padding: 30px 5%;
+  }
+}
+
+@media (max-width: 480px) {
+  .checkout-input-row {
+    grid-template-columns: 1fr;
+  }
+
+  .shipping-form,
+  .checkout-summary {
+    padding: 20px;
+  }
+}
+
+/* SAVED ADDRESSES */
+
+.saved-addresses {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.saved-address-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid #eeece8;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.saved-address-card.selected {
+  border-color: #bd914b;
+  background: #fbf8f2;
+}
+
+.saved-address-card input {
+  width: auto;
+  margin-top: 4px;
+  accent-color: #bd914b;
+}
+
+.saved-address-details {
+  flex: 1;
+}
+
+.saved-address-details p {
+  margin-top: 6px;
+  color: #85858b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.saved-address-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+}
+
+.saved-address-heading span,
+.saved-address-heading small {
+  padding: 4px 9px;
+  border-radius: 20px;
+  background: #f2e6d2;
+  color: #8b6936;
+  font-size: 11px;
+}
+
+.add-new-address-btn {
+  padding: 13px;
+  background: white;
+  border: 1px dashed #bd914b;
+  border-radius: 7px;
+  color: #bd914b;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.add-new-address-btn:hover {
+  background: #fbf8f2;
+}
+
+/* NEW ADDRESS FORM */
+
+.new-address-form {
+  margin-top: 10px;
+}
+
+.address-form-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.address-form-heading h3 {
+  font-size: 17px;
+}
+
+.address-form-heading button {
+  border: none;
+  background: none;
+  color: #bd914b;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.new-address-form select {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #eeece8;
+  border-radius: 7px;
+  background: white;
+  outline: none;
+  font: inherit;
+  font-size: 14px;
+}
+
+.new-address-form select:focus {
+  border-color: #bd914b;
+}
+
+@media (max-width: 480px) {
+  .saved-address-card {
+    padding: 13px;
+  }
+
+  .address-form-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

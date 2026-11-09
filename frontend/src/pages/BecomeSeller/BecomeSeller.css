@@ -1,0 +1,390 @@
+
+.become-seller-page {
+    background: #fff;
+    color: #191b20;
+    overflow: hidden;
+}
+
+/* HERO */
+
+.seller-hero {
+    min-height: 570px;
+    padding: 85px 8%;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: 50px;
+    background:
+        radial-gradient(circle at 85% 20%, #f2e6d2 0, transparent 35%),
+        #faf9f6;
+}
+
+.seller-content {
+    max-width: 620px;
+}
+
+.seller-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #bd914b;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+}
+
+.seller-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #bd914b;
+}
+
+.seller-content h1 {
+    font-size: clamp(42px, 5.5vw, 72px);
+    line-height: 1.08;
+    letter-spacing: -3px;
+    margin: 0 0 25px;
+    font-weight: 800;
+}
+
+.seller-content h1 span {
+    color: #bd914b;
+}
+
+.seller-content > p {
+    color: #77777d;
+    font-size: 16px;
+    line-height: 1.9;
+    max-width: 520px;
+    margin-bottom: 32px;
+}
+
+.seller-cta {
+    background: #bd914b;
+    color: white;
+    border: none;
+    padding: 17px 25px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    gap: 25px;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.seller-cta:hover {
+    background: #191b20;
+    transform: translateY(-4px);
+}
+
+.seller-cta span {
+    font-size: 20px;
+}
+
+.seller-note {
+    color: #999;
+    font-size: 12px;
+    margin-top: 20px;
+}
+
+/* HERO VISUAL */
+
+.seller-visual {
+    min-height: 390px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.seller-circle {
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    background: #ead9bb;
+    border-radius: 50%;
+    opacity: 0.65;
+}
+
+.seller-card {
+    position: relative;
+    z-index: 2;
+    width: min(340px, 85%);
+    padding: 27px;
+    background: #fff;
+    border: 1px solid #eee8dd;
+    border-radius: 18px;
+    box-shadow: 0 25px 70px rgba(45, 35, 20, 0.13);
+    transform: rotate(-4deg);
+    transition: 0.4s;
+}
+
+.seller-card:hover {
+    transform: rotate(0deg) translateY(-8px);
+}
+
+.seller-card-top,
+.seller-card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #999;
+    font-weight: 700;
+}
+
+.seller-live {
+    color: #438f5d;
+}
+
+.seller-shopping-icon {
+    height: 120px;
+    background: #f5efe4;
+    border-radius: 12px;
+    margin: 25px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.seller-shopping-icon span {
+    font-size: 75px;
+    color: #bd914b;
+}
+
+.seller-card h3 {
+    font-size: 25px;
+    margin: 5px 0;
+}
+
+.seller-gold-text {
+    color: #bd914b;
+}
+
+.seller-card p {
+    color: #999;
+    font-size: 12px;
+    margin: 12px 0 25px;
+}
+
+.seller-card-bottom {
+    border-top: 1px solid #eee;
+    padding-top: 17px;
+}
+
+.seller-floating {
+    position: absolute;
+    z-index: 3;
+    background: #fff;
+    padding: 13px 17px;
+    border-radius: 9px;
+    box-shadow: 0 10px 30px #00000012;
+    font-size: 12px;
+    font-weight: 700;
+    color: #555;
+    animation: sellerFloat 3s ease-in-out infinite;
+}
+
+.seller-float-one {
+    top: 55px;
+    right: 0;
+}
+
+.seller-float-two {
+    bottom: 45px;
+    left: 0;
+    animation-delay: 1s;
+}
+
+@keyframes sellerFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* BENEFITS */
+
+.seller-benefits {
+    padding: 90px 8%;
+}
+
+.seller-section-heading {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 50px;
+}
+
+.seller-section-heading > span {
+    color: #bd914b;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.seller-section-heading h2 {
+    font-size: clamp(28px, 4vw, 42px);
+    letter-spacing: -1.5px;
+    margin: 15px 0;
+}
+
+.seller-section-heading p {
+    color: #888;
+    line-height: 1.7;
+}
+
+.seller-benefit-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.seller-benefit-card {
+    padding: 35px 28px;
+    border: 1px solid #eeeae3;
+    border-radius: 14px;
+    transition: 0.3s;
+    background: #fff;
+}
+
+.seller-benefit-card:hover {
+    transform: translateY(-8px);
+    border-color: #bd914b;
+    box-shadow: 0 15px 35px #00000009;
+}
+
+.benefit-icon {
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    background: #f5efe4;
+    color: #bd914b;
+    font-size: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+}
+
+.seller-benefit-card h3 {
+    font-size: 19px;
+    margin-bottom: 12px;
+}
+
+.seller-benefit-card p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #888;
+}
+
+/* BOTTOM CTA */
+
+.seller-bottom-cta {
+    margin: 0 8% 80px;
+    padding: 65px 25px;
+    text-align: center;
+    background: #191b20;
+    color: #fff;
+    border-radius: 18px;
+}
+
+.seller-bottom-cta h2 {
+    font-size: clamp(25px, 4vw, 38px);
+    margin-bottom: 12px;
+}
+
+.seller-bottom-cta p {
+    color: #aaa;
+    margin-bottom: 25px;
+    line-height: 1.7;
+}
+
+.seller-bottom-cta button {
+    padding: 15px 24px;
+    border: none;
+    border-radius: 8px;
+    background: #bd914b;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.seller-bottom-cta button:hover {
+    background: #fff;
+    color: #191b20;
+}
+
+.seller-bottom-cta button span {
+    margin-left: 12px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 850px) {
+    .seller-hero {
+        grid-template-columns: 1fr;
+        padding: 65px 7%;
+        text-align: center;
+    }
+
+    .seller-content {
+        margin: auto;
+    }
+
+    .seller-content > p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .seller-visual {
+        min-height: 370px;
+    }
+
+    .seller-benefit-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .seller-hero {
+        padding: 55px 6%;
+    }
+
+    .seller-content h1 {
+        letter-spacing: -2px;
+    }
+
+    .seller-circle {
+        width: 280px;
+        height: 280px;
+    }
+
+    .seller-floating {
+        font-size: 10px;
+        padding: 10px;
+    }
+
+    .seller-float-one {
+        right: -5px;
+    }
+
+    .seller-float-two {
+        left: -5px;
+    }
+
+    .seller-benefits {
+        padding: 65px 6%;
+    }
+
+    .seller-bottom-cta {
+        margin: 0 6% 50px;
+        padding: 45px 20px;
+    }
+}

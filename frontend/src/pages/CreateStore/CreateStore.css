@@ -1,0 +1,88 @@
+
+.create-store-page {
+    min-height: 100vh;
+    padding: 50px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f5f2ec;
+}
+
+.create-store-card {
+    width: 100%;
+    max-width: 550px;
+    padding: 42px;
+    background: #fff;
+    border: 1px solid #eeece8;
+    border-radius: 18px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.06);
+}
+
+.create-store-tag {
+    color: #bd914b;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 3px;
+}
+
+.create-store-card h1 {
+    margin: 18px 0 10px;
+    color: #191b20;
+    font-size: 36px;
+}
+
+.create-store-card > p {
+    color: #85858b;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.create-store-card label {
+    display: block;
+    margin: 18px 0 8px;
+    color: #191b20;
+    font-weight: 600;
+}
+
+.create-store-card input,
+.create-store-card textarea {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #eeece8;
+    border-radius: 9px;
+    outline: none;
+    font: inherit;
+}
+
+.create-store-card input:focus,
+.create-store-card textarea:focus {
+    border-color: #bd914b;
+}
+
+.create-store-card textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.create-store-card button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 25px;
+    background: #bd914b;
+    color: white;
+    border: none;
+    border-radius: 9px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.create-store-card button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.create-store-error {
+    color: #d32f2f;
+    margin-top: 15px;
+}
