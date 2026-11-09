@@ -1,17 +1,15 @@
-
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import API from "../../api/axios";
 import "./MyOrders.css";
 
-// Get the backend URL from the Axios configuration
+// Get backend URL from Axios configuration
 const SERVER_URL = API.defaults.baseURL.replace(/\/api\/?$/, "");
 
-// Convert relative image paths into full backend URLs
+// Convert image paths into complete URLs
 const getImageUrl = (imageUrl) => {
   if (!imageUrl) return "";
 
-  // Keep external image URLs unchanged
   if (
     imageUrl.startsWith("http://") ||
     imageUrl.startsWith("https://") ||
@@ -21,7 +19,6 @@ const getImageUrl = (imageUrl) => {
     return imageUrl;
   }
 
-  // Convert /uploads/image.jpg into the full Render URL
   return `${SERVER_URL}/${imageUrl.replace(/^\/+/, "")}`;
 };
 
@@ -33,9 +30,7 @@ export default function MyOrders() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [expandedOrder, setExpandedOrder] = useState(null);
-  const [reviewedProductIds, setReviewedProductIds] = useState(
-    () => new Set()
-  );
+  const [reviewedProductIds, setReviewedProductIds] = useState(new Set());
   const [reviewDetailsByKey, setReviewDetailsByKey] = useState({});
   const [reviewDrafts, setReviewDrafts] = useState({});
   const [activeReviewProductId, setActiveReviewProductId] = useState(null);
@@ -60,9 +55,7 @@ export default function MyOrders() {
         setReviewedProductIds(
           new Set(
             customerReviews.map((review) =>
-              `${String(
-                review.order?._id || review.order
-              )}:${String(
+              `${String(review.order?._id || review.order)}:${String(
                 review.product?._id || review.product
               )}`
             )
@@ -72,9 +65,7 @@ export default function MyOrders() {
         setReviewDetailsByKey(
           Object.fromEntries(
             customerReviews.map((review) => [
-              `${String(
-                review.order?._id || review.order
-              )}:${String(
+              `${String(review.order?._id || review.order)}:${String(
                 review.product?._id || review.product
               )}`,
               review,
@@ -254,9 +245,7 @@ export default function MyOrders() {
                 </div>
 
                 <span
-                  className={`order-status ${getStatusClass(
-                    order.status
-                  )}`}
+                  className={`order-status ${getStatusClass(order.status)}`}
                 >
                   {order.status}
                 </span>
@@ -283,7 +272,7 @@ export default function MyOrders() {
                     order.status?.toLowerCase() === "delivered" &&
                     productId;
 
-                  // Support both saved order images and populated product images
+                  // Use the image saved in the order first
                   const imageUrl = getImageUrl(
                     item.imageUrl || item.product?.imageUrl
                   );
@@ -293,47 +282,48 @@ export default function MyOrders() {
                       className="order-product"
                       key={item._id || `${order._id}-${index}`}
                     >
-                      {/* Product image with fallback */}
-                      {imageUrl ? (
-                        <img
-                          src={imageUrl}
-                          alt={
-                            item.name ||
-                            item.product?.name ||
-                            "Product"
-                          }
-                          onError={(event) => {
-                            event.currentTarget.style.display = "none";
+                      {/* Product image */}
+                      <div className="order-product-image-wrapper">
+                        {imageUrl ? (
+                          <img
+                            src={imageUrl}
+                            alt={item.name || item.product?.name || "Product"}
+                            className="order-product-image"
+                            onError={(event) => {
+                              console.error(
+                                "Order image failed to load:",
+                                event.currentTarget.src
+                              );
 
-                            const fallback =
-                              event.currentTarget.nextElementSibling;
+                              event.currentTarget.style.display = "none";
 
-                            if (fallback) {
-                              fallback.style.display = "flex";
-                            }
+                              const fallback =
+                                event.currentTarget.nextElementSibling;
+
+                              if (fallback) {
+                                fallback.style.display = "flex";
+                              }
+                            }}
+                          />
+                        ) : null}
+
+                        <div
+                          className="order-product-placeholder"
+                          style={{
+                            display: imageUrl ? "none" : "flex",
                           }}
-                        />
-                      ) : null}
-
-                      <div
-                        className="order-product-placeholder"
-                        style={{
-                          display: imageUrl ? "none" : "flex",
-                        }}
-                      >
-                        No Image
+                        >
+                          No Image
+                        </div>
                       </div>
 
                       <div className="order-product-info">
                         <h3>
-                          {item.name ||
-                            item.product?.name ||
-                            "Product"}
+                          {item.name || item.product?.name || "Product"}
                         </h3>
 
                         <p>Quantity: {item.quantity}</p>
 
-                        {/* Already submitted review */}
                         {canReview &&
                         reviewedProductIds.has(reviewKey) ? (
                           <div className="order-review-posted">
@@ -341,20 +331,13 @@ export default function MyOrders() {
                               ✓ Your review
                             </strong>
 
-                            <div
-                              className="order-review-posted-stars"
-                              aria-label={`${
-                                submittedReview?.rating || 0
-                              } out of 5 stars`}
-                            >
+                            <div className="order-review-posted-stars">
                               {"★".repeat(
                                 Number(submittedReview?.rating) || 0
                               )}
                               {"☆".repeat(
                                 5 -
-                                  (Number(
-                                    submittedReview?.rating
-                                  ) || 0)
+                                  (Number(submittedReview?.rating) || 0)
                               )}
                             </div>
 
@@ -365,7 +348,6 @@ export default function MyOrders() {
                           </div>
                         ) : canReview &&
                           activeReviewProductId === reviewKey ? (
-                          /* Review form */
                           <form
                             className="order-review-form"
                             onSubmit={(event) =>
@@ -385,9 +367,7 @@ export default function MyOrders() {
                                   key={star}
                                   type="button"
                                   className={
-                                    star <= draft.rating
-                                      ? "selected"
-                                      : ""
+                                    star <= draft.rating ? "selected" : ""
                                   }
                                   onClick={() =>
                                     updateReviewDraft(reviewKey, {
@@ -428,9 +408,7 @@ export default function MyOrders() {
                             <div className="order-review-actions">
                               <button
                                 type="submit"
-                                disabled={
-                                  submittingReviewId === reviewKey
-                                }
+                                disabled={submittingReviewId === reviewKey}
                               >
                                 {submittingReviewId === reviewKey
                                   ? "Submitting..."
@@ -443,16 +421,13 @@ export default function MyOrders() {
                                 onClick={() =>
                                   setActiveReviewProductId(null)
                                 }
-                                disabled={
-                                  submittingReviewId === reviewKey
-                                }
+                                disabled={submittingReviewId === reviewKey}
                               >
                                 Cancel
                               </button>
                             </div>
                           </form>
                         ) : canReview ? (
-                          /* Rate product button */
                           <div className="order-review-entry">
                             <button
                               type="button"
@@ -480,8 +455,7 @@ export default function MyOrders() {
                       <strong>
                         ₹
                         {(
-                          Number(item.price) *
-                          Number(item.quantity)
+                          Number(item.price) * Number(item.quantity)
                         ).toFixed(2)}
                       </strong>
                     </div>
@@ -497,9 +471,7 @@ export default function MyOrders() {
                 <button
                   onClick={() =>
                     setExpandedOrder(
-                      expandedOrder === order._id
-                        ? null
-                        : order._id
+                      expandedOrder === order._id ? null : order._id
                     )
                   }
                 >
