@@ -4,22 +4,16 @@ import API from "../../api/axios";
 import "./MyOrders.css";
 
 // Get backend URL from Axios configuration
-const SERVER_URL = API.defaults.baseURL.replace(/\/api\/?$/, "");
+const SERVER_URL = "https://shopzone-4ugp.onrender.com";
 
-// Convert image paths into complete URLs
 const getImageUrl = (imageUrl) => {
-  if (!imageUrl) return "";
+    if (!imageUrl) return "";
 
-  if (
-    imageUrl.startsWith("http://") ||
-    imageUrl.startsWith("https://") ||
-    imageUrl.startsWith("data:") ||
-    imageUrl.startsWith("blob:")
-  ) {
-    return imageUrl;
-  }
+    if (imageUrl.startsWith("http")) {
+        return imageUrl;
+    }
 
-  return `${SERVER_URL}/${imageUrl.replace(/^\/+/, "")}`;
+    return `${SERVER_URL}/${imageUrl.replace(/^\/+/, "")}`;
 };
 
 export default function MyOrders() {
@@ -286,7 +280,7 @@ export default function MyOrders() {
                       <div className="order-product-image-wrapper">
                         {imageUrl ? (
                           <img
-                            src={imageUrl}
+                            src={getImageUrl(item.imageUrl)}
                             alt={item.name || item.product?.name || "Product"}
                             className="order-product-image"
                             onError={(event) => {
