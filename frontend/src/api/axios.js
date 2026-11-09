@@ -1,8 +1,8 @@
-
 import axios from "axios";
 
 const API = axios.create({
-    baseURL: "https://shopzone-4ugp.onrender.com/api"
+    baseURL: "https://shopzone-4ugp.onrender.com/api",
+    withCredentials: true,
 });
 
 API.interceptors.request.use(
@@ -19,4 +19,3 @@ API.interceptors.request.use(
 );
 
 export default API;
-
