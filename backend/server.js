@@ -26,8 +26,11 @@ DatabaseConnection();
 
 // Middleware
 app.use(cors({
-    origin: "https://shopzone-lime.vercel.app",
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    origin: [
+        "https://shopzone-lime.vercel.app",
+        "http://localhost:5173"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     credentials: true
 }));
 

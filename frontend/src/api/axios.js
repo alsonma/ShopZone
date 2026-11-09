@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const API = axios.create({
-    baseURL: "https://shopzone-4ugp.onrender.com"
+    baseURL: "https://shopzone-4ugp.onrender.com/api"
 });
 
 API.interceptors.request.use(

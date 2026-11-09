@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import API from "../../api/axios";
 import "./ProductDetails.css";
 
-const SERVER_URL = "http://localhost:5000";
+const SERVER_URL = "https://shopzone-4ugp.onrender.com";
 
 const getImageUrl = (url) => {
     if (!url) return "";
