@@ -3,17 +3,25 @@ import { useLocation, useNavigate } from "react-router-dom";
 import API from "../../api/axios";
 import "./MyOrders.css";
 
-// Get backend URL from Axios configuration
+// Backend server URL
 const SERVER_URL = "https://shopzone-4ugp.onrender.com";
 
+// Convert relative image paths into complete backend URLs
 const getImageUrl = (imageUrl) => {
-    if (!imageUrl) return "";
+  if (!imageUrl) return "";
 
-    if (imageUrl.startsWith("http")) {
-        return imageUrl;
-    }
+  // Keep external image URLs unchanged
+  if (
+    imageUrl.startsWith("http://") ||
+    imageUrl.startsWith("https://") ||
+    imageUrl.startsWith("data:") ||
+    imageUrl.startsWith("blob:")
+  ) {
+    return imageUrl;
+  }
 
-    return `${SERVER_URL}/${imageUrl.replace(/^\/+/, "")}`;
+  // Convert /uploads/image.jpg into the Render backend URL
+  return `${SERVER_URL}/${imageUrl.replace(/^\/+/, "")}`;
 };
 
 export default function MyOrders() {
@@ -67,6 +75,8 @@ export default function MyOrders() {
           )
         );
       } catch (err) {
+        console.error("Fetch orders error:", err);
+
         setError(
           err.response?.data?.message || "Unable to fetch orders."
         );
@@ -149,6 +159,8 @@ export default function MyOrders() {
           response.data.message || "Review submitted successfully.",
       }));
     } catch (err) {
+      console.error("Submit review error:", err);
+
       setReviewMessages((current) => ({
         ...current,
         [reviewKey]:
@@ -266,7 +278,7 @@ export default function MyOrders() {
                     order.status?.toLowerCase() === "delivered" &&
                     productId;
 
-                  // Use the image saved in the order first
+                  // Get image URL from order or populated product
                   const imageUrl = getImageUrl(
                     item.imageUrl || item.product?.imageUrl
                   );
@@ -280,8 +292,12 @@ export default function MyOrders() {
                       <div className="order-product-image-wrapper">
                         {imageUrl ? (
                           <img
-                            src={getImageUrl(item.imageUrl)}
-                            alt={item.name || item.product?.name || "Product"}
+                            src={imageUrl}
+                            alt={
+                              item.name ||
+                              item.product?.name ||
+                              "Product"
+                            }
                             className="order-product-image"
                             onError={(event) => {
                               console.error(
@@ -313,11 +329,14 @@ export default function MyOrders() {
 
                       <div className="order-product-info">
                         <h3>
-                          {item.name || item.product?.name || "Product"}
+                          {item.name ||
+                            item.product?.name ||
+                            "Product"}
                         </h3>
 
                         <p>Quantity: {item.quantity}</p>
 
+                        {/* Already submitted review */}
                         {canReview &&
                         reviewedProductIds.has(reviewKey) ? (
                           <div className="order-review-posted">
@@ -342,6 +361,7 @@ export default function MyOrders() {
                           </div>
                         ) : canReview &&
                           activeReviewProductId === reviewKey ? (
+                          /* Review form */
                           <form
                             className="order-review-form"
                             onSubmit={(event) =>
@@ -361,7 +381,9 @@ export default function MyOrders() {
                                   key={star}
                                   type="button"
                                   className={
-                                    star <= draft.rating ? "selected" : ""
+                                    star <= draft.rating
+                                      ? "selected"
+                                      : ""
                                   }
                                   onClick={() =>
                                     updateReviewDraft(reviewKey, {
@@ -402,7 +424,9 @@ export default function MyOrders() {
                             <div className="order-review-actions">
                               <button
                                 type="submit"
-                                disabled={submittingReviewId === reviewKey}
+                                disabled={
+                                  submittingReviewId === reviewKey
+                                }
                               >
                                 {submittingReviewId === reviewKey
                                   ? "Submitting..."
@@ -415,13 +439,16 @@ export default function MyOrders() {
                                 onClick={() =>
                                   setActiveReviewProductId(null)
                                 }
-                                disabled={submittingReviewId === reviewKey}
+                                disabled={
+                                  submittingReviewId === reviewKey
+                                }
                               >
                                 Cancel
                               </button>
                             </div>
                           </form>
                         ) : canReview ? (
+                          /* Rate product button */
                           <div className="order-review-entry">
                             <button
                               type="button"
@@ -449,7 +476,8 @@ export default function MyOrders() {
                       <strong>
                         ₹
                         {(
-                          Number(item.price) * Number(item.quantity)
+                          Number(item.price) *
+                          Number(item.quantity)
                         ).toFixed(2)}
                       </strong>
                     </div>
@@ -465,7 +493,9 @@ export default function MyOrders() {
                 <button
                   onClick={() =>
                     setExpandedOrder(
-                      expandedOrder === order._id ? null : order._id
+                      expandedOrder === order._id
+                        ? null
+                        : order._id
                     )
                   }
                 >
